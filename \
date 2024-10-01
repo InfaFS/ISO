@@ -1,0 +1,44 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]
+then
+    echo "Cantidad de parametros invalida"
+    exit 1
+
+else
+   arreglo=($(who | grep $1 | cut -d" " -f1))
+   echo "${arreglo[@]}" 
+   
+   select opcion in listar eliminar contar salir
+   do
+   
+   case $opcion in
+   "listar")
+    for i in "${arreglo[@]}"
+    do    
+    echo "$i"
+    done
+    ;;
+    "eliminar")
+    for ((i=0;i<"${#arreglo[@]}";i++))
+    do
+    echo "${arreglo[$i]} indice $i"
+    done
+    echo "Ingrese un indice para eliminar: "
+    read entry
+    if [ $entry -gt 0 ] && [ $entry -lt "${#arreglo[@]" ]
+    then
+       unset "arreglo[$entry]"
+    else
+       echo "Indice no valido"
+    fi
+    ;;
+    "contar")
+    echo "Cantidad de elementos en el arreglo ${#arreglo[@]}"
+    ;;
+    "salir")
+    exit 0
+    ;;
+
+   done
+fi
